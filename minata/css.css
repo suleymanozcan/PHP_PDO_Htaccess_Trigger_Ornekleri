@@ -1,0 +1,22 @@
+body            { margin:0px; padding:0px; font: 15px/1.6 'Arial'; }
+a               { text-decoration: none; color:#000;}
+a:hover         {  color:#ff0000;}
+.left           { float:left; }
+.center         { text-align: center; }
+.text-left      { text-align: left; }
+header          { max-width: 1200px; width: 100%; margin: 30px auto; }
+header ul       { padding:0; }
+header ul li    { display: table-cell; padding:5px; }
+.container      { max-width: 1200px; width: 100%; margin: 0 auto; }
+table           { width: 100%; }
+table td        { padding: 5px; }
+table td .icon  { padding: 0 5px; }
+footer          { max-width: 1200px; width: 100%; margin: 30px auto; text-align: center; font-size:12px; color:#999; }
+footer a        { font-weight: 600; color:#00c7d9}
+label           { width: 30%; box-sizing: border-box; clear: both; }
+input           { width: 70%; box-sizing: border-box }
+textarea        { width: 70%; box-sizing: border-box; height: 200px; }
+button          { width: 100%; margin: 20px 0; padding:10px 0;}
+.tooltip                    { position:relative; display:inline-block; font-size:12px;}
+.tooltip .tooltiptext       { visibility:hidden; width:130px; background-color:#555; color:#fff; text-align:center; padding:5px 0; border-radius:6px; position:absolute; z-index:1; bottom:125%; left:50%; margin-left:-60px; opacity:0; transition:opacity .3s}
+.tooltip:hover .tooltiptext { visibility:visible; opacity:1}
