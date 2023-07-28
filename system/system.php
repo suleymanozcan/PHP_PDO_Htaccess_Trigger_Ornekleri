@@ -1,13 +1,38 @@
 <?php
-function createPermalink($str) {
+function createPermalink($str, $locale = 'en') {
+    $transliterator = Transliterator::create('Any-Latin; Latin-ASCII; [\u0080-\u7fff] remove', Transliterator::FORWARD);
+    $str = $transliterator->transliterate($str);
     $str = mb_strtolower($str, 'UTF-8');
-    $search = array('ı', 'ğ', 'ü', 'ş', 'ö', 'ç', 'İ', 'Ğ', 'Ü', 'Ş', 'Ö', 'Ç');
-    $replace = array('i', 'g', 'u', 's', 'o', 'c', 'i', 'g', 'u', 's', 'o', 'c');
-    $str = str_replace($search, $replace, $str);
-    $str = preg_replace('/[^a-zA-Z0-9\s]/', '', $str);
-    $str = str_replace(' ', '-', $str);
+    $str = preg_replace('/\s+/', '-', $str);
+    $str = preg_replace('/[^\p{L}\p{N}\-]+/u', '', $str);
+    $str = trim($str, '-');
     return $str;
 }
+
+function URLchecked($table,$url) {
+    global $db;
+    $original_url   = $url;
+    $count = 0;
+    $suffix = 0;
+    while (true) {
+        $url_checked = $db->prepare("SELECT COUNT(*) as count FROM $table WHERE url = :url");
+        $url_checked->execute([':url' => $url]);
+        $result = $url_checked->fetch(PDO::FETCH_ASSOC);
+        $count = $result['count'];
+        if ($count === 0) {
+            break;
+        }
+        $suffix += 1; // Sonek sayısını 1 artır
+        $pos = strrpos($original_url, '.html');
+        if ($pos !== false) {
+            $url = substr($original_url, 0, $pos) . '-' . $suffix . substr($original_url, $pos);
+        } else {
+            $url = $original_url . '-' . $suffix;
+        }
+    }
+    return $url;
+}
+
 
 function image_upload() {
     $izin_verilen_turler    = array('image/jpeg', 'image/pjpeg', 'image/png', 'image/webp');
@@ -49,32 +74,36 @@ function image_upload() {
 }
 
 
-function islemler($location, $url, $id)
-{
-    if ($location == 'products') {
-        $islemler = "
+function islemler($location, $url, $id){
+    $location_array = [
+        'products' => [
+            ['product-details/'.$url, '🔎', 'Ürün Detayı', ''],
+            ['product-edit/'.$id, '✍', 'Ürün Düzenle', ''],
+            ['product-image/'.$id, '📁', 'Ürün Resim Güncelle', ''],
+            ['products/'.$id.'/delete', '🗑', 'Ürünü Sil', 'delete'],
+        ],
+        'categories' => [
+            ['categories-products/'.$url, '🔎', 'Ürünleri Gör', ''],
+            ['categories-edit/'.$id, '✍', 'Kategori Düzenle', ''],
+            ['categories/'.$id.'/delete', '🗑', 'Kategoriyi Sil', 'delete'],
+        ],
+        'brands' => [
+            ['brands-products/'.$url, '🔎', 'Ürünleri Gör', ''],
+            ['brands-edit/'.$id, '✍', 'Markayı Düzenle', ''],
+            ['brands/'.$id.'/delete', '🗑', 'Markayı Sil', 'delete'],
+        ],
+    ];
+
+    $islemler = '';
+    foreach ($location_array[$location] as $action) {
+        $islemler .= "
             <div class='tooltip'>
-                <a class='icon' href='product-details/{$url}'>🔎</a>
-                <span class='tooltiptext'>Ürün Detayı</span>
-            </div>
-            <div class='tooltip'>
-                <a class='icon' href='product-edit/{$id}'>✍</a>
-                <span class='tooltiptext'>Ürün Düzenle</span>
-            </div>
-            <div class='tooltip'>
-                <a class='icon' href='product-image/{$id}'>📁</a>
-                <span class='tooltiptext'>Ürün Resim Güncelle</span>
-            </div>
-            <div class='tooltip'>
-                <a class='icon' href='products/{$id}/delete'>🗑</a>
-                <span class='tooltiptext'>Ürünü Sil</span>
+                <a class='icon {$action[3]}' href='{$action[0]}'>{$action[1]}</a>
+                <span class='tooltiptext'>{$action[2]}</span>
             </div>
         ";
     }
     return $islemler;
 }
 
-function emptyValue($value){
-
-}
 ?>

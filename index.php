@@ -1,21 +1,17 @@
 <?php
-define("ROOT",dirname(__FILE__));
-require(ROOT.'/config.php');
+$path = $_SERVER['DOCUMENT_ROOT']."/";
+require($path.'config.php');
 $MaxLimit   = 5;
 $currency   = "TL";
-if($delete == 'delete'){
-    $where  = ['id' => $id];
-    $result = $db->delete('products', $where);
-    $sonuc  = $result->message;
-}
-$product    = $db->query("SELECT products.id, products.name, products.url, products.price, products.vat, products.stock_code, products.stock_quantity, categories.name as category_name, brands.name as brand_name FROM products LEFT JOIN categories on products.cat_id=categories.id LEFT JOIN brands on products.bra_id=brands.id ORDER BY products.id DESC LIMIT $MaxLimit")->fetchAll(PDO::FETCH_OBJ);
+
+$product    = $db->query("SELECT * FROM Product_Views ORDER BY id DESC LIMIT $MaxLimit")->fetchAll(PDO::FETCH_OBJ);
+// $product için readme de yer alan VIEW kısmına bakınız.
 $brand      = $db->query("SELECT * FROM brands ORDER BY id DESC LIMIT $MaxLimit")->fetchAll(PDO::FETCH_OBJ);
 $category   = $db->query("SELECT * FROM categories ORDER BY id DESC LIMIT $MaxLimit")->fetchAll(PDO::FETCH_OBJ);
 /*
  * categories ve brands tablosunda select * from kullanmamın sebebi gelecek sutunların zaten çoğunluğunu kullanacağım
- * o yüzden select * from yaptım. eğer product'daki gibi bir sorgunuz varsa tabi ki optimize için ihtiyacınız olanları
- * çekmeniz yararına olacaktır. bir de şu var zaten limit olduğu için öyle kullandım.
- * böylece her 2 kullanımı da görmüş olursunuz diye düşündüm.
+ * o yüzden select * from yaptım. $product değerindeki SQL sorgusu için Readme.md de yer alan VIEW oluşturma kısmına
+ * bakmanız yararınıza olacaktır. böylece her 2 kullanımı da görmüş olursunuz diye düşündüm.
 */
 
 ?>
@@ -32,8 +28,7 @@ $category   = $db->query("SELECT * FROM categories ORDER BY id DESC LIMIT $MaxLi
 <body>
 <?php include(THEME.'header.php'); ?>
 <div class="container">
-    <?php echo $sonuc; ?>
-    <h1>Son Eklenen 5 Ürün</h1>
+    <h1>Son Eklenen <?php echo $MaxLimit; ?> Ürün</h1>
     <table>
         <thead>
             <tr>
@@ -70,7 +65,7 @@ $category   = $db->query("SELECT * FROM categories ORDER BY id DESC LIMIT $MaxLi
         ?>
         </tbody>
     </table>
-    <h1>Son Eklenen 5 Kategori</h1>
+    <h1>Son Eklenen <?php echo $MaxLimit; ?> Kategori</h1>
     <table>
         <thead>
         <tr>
@@ -87,7 +82,7 @@ $category   = $db->query("SELECT * FROM categories ORDER BY id DESC LIMIT $MaxLi
                 <tr>
                     <td>{$categories->name}</td>
                     <td>{$categories->total}</td>
-                    <td class='center'>{$categories->total}</td>
+                    <td class='center'><a href='categories-products/{$categories->url}'>{$categories->total}</a></td>
                     <td class='center'>
                         ".islemler('categories', $categories->url, $categories->id)."
                     </td>
@@ -97,11 +92,41 @@ $category   = $db->query("SELECT * FROM categories ORDER BY id DESC LIMIT $MaxLi
         ?>
         </tbody>
     </table>
-    <h1>Son Eklenen 5 Marka</h1>
-
+    <h1>Son Eklenen <?php echo $MaxLimit; ?> Marka</h1>
+    <table>
+        <thead>
+        <tr>
+            <th class="text-left">Marka Adı</th>
+            <th>Ürün Sayısı</th>
+            <th>Bilgiler</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        if(empty($brand)){
+            /*
+             * Yukarıdaki kategori ve ürünlerde bilerek yapmadım. Farkı görün diye.
+             * Bu arada if'i önceye almamın nedeni eğer boş ise foreach'e girmesine gerek yok diye yaptım.
+             * Eğer isterseniz if else yerine direk if kullanabilirsiniz. Ama tavsiyem bu şekilde kullanmanız olur.
+            */
+            echo "<tr><td colspan='3' class='center'>Kayıtlı bir marka bulunamadı.</td></tr>";
+        } else {
+            foreach ($brand as $brands):
+                echo "
+                    <tr>
+                        <td>{$brands->name}</td>
+                        <td class='center'><a href='brands-products/{$brands->url}'>{$brands->total}</a></td>
+                        <td class='center'>
+                            ".islemler('brands', $brands->url, $brands->id)."
+                        </td>
+                    </tr>
+                ";
+            endforeach;
+        }
+        ?>
+        </tbody>
+    </table>
 </div>
-<footer>
-    Copyright Pure PHP. Designed by <a href="https://codermingle.dev/@suleymanozcan" target="_blank">Süleyman Zuckerberg</a>
-</footer>
+<?php include(THEME.'footer.php'); ?>
 </body>
 </html>

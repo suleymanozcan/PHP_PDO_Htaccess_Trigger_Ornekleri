@@ -132,7 +132,7 @@ Class Database extends PDO {
             $affected_rows = $stmt->rowCount();
             if ($affected_rows === 0) {
                 $response->status = 0;
-                $response->message = "<center><b>Kayıt bulunamadı.</b></center>";
+                $response->message = "<center><b>Bu ID ile silinecek bir kayıt bulunamadı.</b></center>";
             } else {
                 $response->status = 1;
                 $response->message = "<center>Kayıtlar başarıyla silindi.</center>";

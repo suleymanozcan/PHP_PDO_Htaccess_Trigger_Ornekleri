@@ -10,6 +10,14 @@ Options +FollowSymlinks
 RewriteEngine on
 RewriteBase /
 
+
+RewriteRule brands/(.*)/delete                                     pages/brands/brands-list.php?id=$1&delete=delete [L,NC,QSA]
+RewriteRule brands-add/added                                       pages/brands/brands-add.php?add=add [L,NC,QSA]
+RewriteRule brands-add                                             pages/brands/brands-add.php [L,NC,QSA]
+RewriteRule brands/pages/(.*)                                      pages/brands/brands-list.php?page=$1 [L,NC,QSA]
+RewriteRule ^brands                                                pages/brands/brands-list.php [L,NC,QSA]
+
+
 # php -- BEGIN cPanel-generated handler, do not edit
 # Set the “ea-php74” package as the default “PHP” programming language.
 <IfModule mime_module>

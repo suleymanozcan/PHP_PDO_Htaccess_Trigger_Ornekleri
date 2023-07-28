@@ -85,7 +85,7 @@ Burada asıl konu aslında +1, -1 den kurtulmak değil. Aslında bu işin tiyatr
 index.php içindeki son 5 kategori kısmından buna örnek vermek gerekirse. Şimdi biz bu alanda total sayıyı direk
 kategoriye yazmamış olsaydık ne yapacaktık. Aşağıdaki foreach'de gidecektik. product tablosundaki cat_id'ler ile 
 categories->id'yi eşleştirip count alacaktık. bu da her foreach döngüsünde tekrar tekrar sorgu demek.
-İster yüksek kullanıcılı olsun ister düşük farketmez her türlü kaynak tüketimine neden olacaktı.
+İster yüksek kullanıcılı olsun ister düşük farketmez her türlü kaynak tüketimine ve performans sorununa neden olacaktı.
 O yüzden trigger yazıp hem kontrolleri trigger'a yıktık hemde ekstra sorgudan kurtulduk.
 Burada yaptığımız işlemin aynısını brands içinde yapacağız.
 
@@ -106,6 +106,27 @@ endforeach;
 ```
 
 
+
+# VIEW Oluşturma & Kullanımı
+
+Hadi gelin aşağıdaki SQL sorgusu için bir de view oluşturalım. Aslında çok bir farkı yok. Lakin aşağıdaki sorguyu
+bir kaç yerde kullanacağım tabi bazı değişiklikler olacaktır sayfalama, kategori ürünleri gösterme,
+marka ürünlerini gösterme gibi biz de ona uygun bir view oluşturacağız. Maksat sorgu uzunluğundan kurtulalım şimdilik.
+
+Eğer View oluşturmasaydık Normal SQL Sorgumuz
+```
+SELECT products.id, products.cat_id, products.bra_id, products.name, products.url, products.price, products.vat, products.stock_code, products.stock_quantity, categories.name as category_name, brands.name as brand_name FROM products LEFT JOIN categories on products.cat_id=categories.id LEFT JOIN brands on products.bra_id=brands.id ORDER BY products.id DESC LIMIT $MaxLimit
+```
+```
+CREATE VIEW Product_Views AS SELECT products.id, products.cat_id, products.bra_id, products.name, products.url, products.price, products.vat, products.stock_code, products.stock_quantity, categories.name as category_name, brands.name as brand_name FROM products LEFT JOIN categories on products.cat_id=categories.id LEFT JOIN brands on products.bra_id=brands.id;
+```
+
+Nasıl View Oluştururuz  : https://prnt.sc/GPwX2UFI1d2H
+
+Normal SQL sorgumuzun başına "CREATE VIEW adi AS" yazıp sql sorgumuzu devamına yapıştırıyoruz o kadar :)
+
+** Ekleme View'e products.cat_id ve products.bra_id'yi de ekledim. Ekran görüntüsünde o 2 sütun bulunmuyor **
+
 ----
 
 # Bilgi 1
@@ -122,3 +143,23 @@ Hazır bir tooltip kütüphanesi kullanıp yine kod karmaşasına girmek istemed
 .tooltip:hover .tooltiptext { visibility:visible; opacity:1}
 ```
 
+# Bilgi 3
+form elemanlarının şartlarını sadece html5 attributes ile kontrol yaptırıyorum. bunu php kontrolleriyle de yapmanız
+faydanıza olacaktır. Kullanacağınız herhangi bir jquery kütüphanesi içeriğinizin doğruluğunu tam anlamıyla kontrol edemez.
+
+# Bilgi 4
+createPermalink fonksiyonunda bir önceki çalışmamızdan farklı olarak bir güncelleme yaptım.
+Bu güncellemenin amacı tüm dillerde permalink oluşturabilmek. Rusça, Arapça, Türkçe vb.
+Eğer sizde hata verirse php.ini de extension=intl saturubu aktif etmeniz gerekebilir veya bir önceki fonksiyonu kullanabilirsiniz.
+Fakat sisteminizde rusça, arapça vs olacaksa türkçede yaptığım gibi çeviri yapmanız gerekecektir.
+
+# Bilgi 5
+createPermalink fonksiyonuna ek olarak 1 fonksiyon daha oluşturduk bu da URLChecked bunun amacı. Eğer o tabloda aynı
+isimde bir url var ise url sonuna -1,-2,-3 şeklinde url'yi benzersiz oluşturması için.
+URLchecked fonksiyonunda bir while döngüsü var. aslında orda döngüye sokmayıp eğer aynı url yapısı var ise 
+direk url'nin sonuna time() atayıp geçebilirsiniz veya farklı bir random sayı. Fakat yapacağınız işte SEO önemliyse pek tavsiye etmem bu işlemi.
+
+# Bilgi 6
+bazı değerler nerden geliyor diyebilirsiniz. Bir önceki repo'da hatırlarsanız. novicehackerdefender.php dosyasında
+$_POST ve $_GET olarak gelen değerleri direk $deger olarak çeviriyorum demiştim o $deger'ler oradan geliyor
+ve htaccess den ;) Cin gibisinizdir de yine de belirteyim dedim :D
