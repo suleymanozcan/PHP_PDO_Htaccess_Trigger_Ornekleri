@@ -150,8 +150,8 @@ faydanıza olacaktır. Kullanacağınız herhangi bir jquery kütüphanesi içer
 # Bilgi 4
 createPermalink fonksiyonunda bir önceki çalışmamızdan farklı olarak bir güncelleme yaptım.
 Bu güncellemenin amacı tüm dillerde permalink oluşturabilmek. Rusça, Arapça, Türkçe vb.
-Eğer sizde hata verirse php.ini de extension=intl saturubu aktif etmeniz gerekebilir veya bir önceki fonksiyonu kullanabilirsiniz.
-Fakat sisteminizde rusça, arapça vs olacaksa türkçede yaptığım gibi çeviri yapmanız gerekecektir.
+Eğer sizde hata verirse php.ini de extension=intl satırını aktif etmeniz gerekebilir veya bir önceki fonksiyonu kullanabilirsiniz.
+Fakat sisteminizde ICU kütüphanesi yoksa rusça, arapça vs olacaksa bir önceki repodaki türkçede yaptığım gibi çeviri yapmanız gerekecektir.
 
 # Bilgi 5
 createPermalink fonksiyonuna ek olarak 1 fonksiyon daha oluşturduk bu da URLChecked bunun amacı. Eğer o tabloda aynı
