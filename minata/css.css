@@ -15,6 +15,7 @@ footer          { max-width: 1200px; width: 100%; margin: 30px auto; text-align:
 footer a        { font-weight: 600; color:#00c7d9}
 label           { width: 30%; box-sizing: border-box; clear: both; }
 input           { width: 70%; box-sizing: border-box; margin:2px 0 0 0; }
+select          { width: 70%; box-sizing: border-box; margin:2px 0 0 0; }
 textarea        { width: 70%; box-sizing: border-box; height: 200px; }
 button          { width: 100%; margin: 20px 0; padding:10px 0;}
 a.button        { border-radius: 5px; padding:5px; text-align: center; width: 100%; display: block; background: #00c7d9; color:#fff; margin-bottom:10px; }

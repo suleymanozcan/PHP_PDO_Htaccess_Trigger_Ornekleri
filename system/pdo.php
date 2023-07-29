@@ -56,7 +56,7 @@ Class Database extends PDO {
             $stmt->bindValue(":w_{$key}", $value);
         }
         foreach ($array as $key => $value) {
-            $value = $this->sanitizeValue($value);
+            $value = $this->JsonValue($value);
             $stmt->bindValue(":{$key}", $value);
         }
 
@@ -69,7 +69,6 @@ Class Database extends PDO {
         foreach ($array as $key => $value) {
             $stmt->bindValue(":{$key}", $value);
         }
-
         return $this->executeStatementDelete($stmt);
     }
 

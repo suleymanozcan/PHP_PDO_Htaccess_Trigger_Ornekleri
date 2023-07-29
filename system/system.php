@@ -35,6 +35,11 @@ function URLchecked($table,$url) {
 
 
 function image_upload() {
+    if(empty($_FILES['image']) || $_FILES['image']['size'] == 0){
+        // Dosya seçilmediyse "none.png" dön ve işlemi sonlandır.
+        return "none.png";
+    }
+
     $izin_verilen_turler    = array('image/jpeg', 'image/pjpeg', 'image/png', 'image/webp');
     $izin_verilen_uzantilar = array('jpeg', 'jpg', 'png', 'webp');
 
@@ -77,9 +82,8 @@ function image_upload() {
 function islemler($location, $url, $id){
     $location_array = [
         'products' => [
-            ['product-details/'.$url, '🔎', 'Ürün Detayı', ''],
-            ['product-edit/'.$id, '✍', 'Ürün Düzenle', ''],
-            ['product-image/'.$id, '📁', 'Ürün Resim Güncelle', ''],
+            ['products-details/'.$url, '🔎', 'Ürün Detayı', ''],
+            ['products-edit/'.$id, '✍', 'Ürün Düzenle', ''],
             ['products/'.$id.'/delete', '🗑', 'Ürünü Sil', 'delete'],
         ],
         'categories' => [

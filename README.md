@@ -118,14 +118,14 @@ Eğer View oluşturmasaydık Normal SQL Sorgumuz
 SELECT products.id, products.cat_id, products.bra_id, products.name, products.url, products.price, products.vat, products.stock_code, products.stock_quantity, categories.name as category_name, brands.name as brand_name FROM products LEFT JOIN categories on products.cat_id=categories.id LEFT JOIN brands on products.bra_id=brands.id ORDER BY products.id DESC LIMIT $MaxLimit
 ```
 ```
-CREATE VIEW Product_Views AS SELECT products.id, products.cat_id, products.bra_id, products.name, products.url, products.price, products.vat, products.stock_code, products.stock_quantity, categories.name as category_name, brands.name as brand_name FROM products LEFT JOIN categories on products.cat_id=categories.id LEFT JOIN brands on products.bra_id=brands.id;
+CREATE OR REPLACE VIEW Product_Views AS SELECT products.id, products.cat_id, products.bra_id, products.name, products.url, products.price, products.vat, products.stock_code, products.stock_quantity, categories.name as category_name, categories.url as categories_url, brands.name as brand_name, brands.url as brand_url FROM products LEFT JOIN categories on products.cat_id=categories.id LEFT JOIN brands on products.bra_id=brands.id
 ```
 
 Nasıl View Oluştururuz  : https://prnt.sc/GPwX2UFI1d2H
 
 Normal SQL sorgumuzun başına "CREATE VIEW adi AS" yazıp sql sorgumuzu devamına yapıştırıyoruz o kadar :)
 
-** Ekleme View'e products.cat_id ve products.bra_id'yi de ekledim. Ekran görüntüsünde o 2 sütun bulunmuyor **
+** Ekleme View'e products.cat_id ve products.bra_id'yi ve birkaç güncelleme yapılmıştır yukarıda tam sorguyu  ekledim. Ekran görüntüsünde o 2 sütun bulunmuyor **
 
 ----
 

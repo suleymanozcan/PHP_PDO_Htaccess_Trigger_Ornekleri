@@ -68,12 +68,11 @@ $category   = $db->query("SELECT * FROM categories ORDER BY id DESC LIMIT $MaxLi
     <h1>Son Eklenen <?php echo $MaxLimit; ?> Kategori</h1>
     <table>
         <thead>
-        <tr>
-            <th class="text-left">Kategori Adı</th>
-            <th class="text-left">Özellik Tanımı</th>
-            <th>Ürün Sayısı</th>
-            <th>Bilgiler</th>
-        </tr>
+            <tr>
+                <th class="text-left">Kategori Adı</th>
+                <th>Ürün Sayısı</th>
+                <th>Bilgiler</th>
+            </tr>
         </thead>
         <tbody>
         <?php
@@ -81,7 +80,6 @@ $category   = $db->query("SELECT * FROM categories ORDER BY id DESC LIMIT $MaxLi
             echo "
                 <tr>
                     <td>{$categories->name}</td>
-                    <td>{$categories->total}</td>
                     <td class='center'><a href='categories-products/{$categories->url}'>{$categories->total}</a></td>
                     <td class='center'>
                         ".islemler('categories', $categories->url, $categories->id)."
@@ -95,11 +93,11 @@ $category   = $db->query("SELECT * FROM categories ORDER BY id DESC LIMIT $MaxLi
     <h1>Son Eklenen <?php echo $MaxLimit; ?> Marka</h1>
     <table>
         <thead>
-        <tr>
-            <th class="text-left">Marka Adı</th>
-            <th>Ürün Sayısı</th>
-            <th>Bilgiler</th>
-        </tr>
+            <tr>
+                <th class="text-left">Marka Adı</th>
+                <th>Ürün Sayısı</th>
+                <th>Bilgiler</th>
+            </tr>
         </thead>
         <tbody>
         <?php
