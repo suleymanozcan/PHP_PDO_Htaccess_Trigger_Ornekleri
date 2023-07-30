@@ -5,26 +5,10 @@ Bazı fonksiyon ve kodların açıklaması için bir önceki repo'ya bakabilirsi
 # PHP_PDO_Htaccess_Trigger_Ornekleri
 
 Bu çalışma da bazı değişikler görebilirsiniz. 
-bunlardan 1 tanesi 
-```
-PDO::FETCH_ASSOC 
-```
-kullanmak yerine 
-```
-PDO::FETCH_OBJ
-``` 
-kullandım.
-çünkü içeriği 
-```
-$results['id']
-```
-yerine 
-```
-$results->id 
-```
-şeklinde kullanmayı daha çok seviyorum.
 
-FETCH_ASSOC ve FETCH_OBJ arasında çok ufak bir bellek kullanım farkı bulunmaktadır ve yüksek miktarda veri çektiğinizde bu, az da olsa bir fark yaratır. Ancak eğer çok büyük miktarda bir veri çekmeyecekseniz, PDO::FETCH_OBJ kullanmanızın herhangi bir zararı olmaz. Ben genellikle bu şekilde kullanmayı daha çok tercih ederim.
+Bunlardan 1 tanesi `PDO::FETCH_ASSOC` kullanmak yerine `PDO::FETCH_OBJ` kullandım. çünkü içeriği `$results['id']` yerine `$results->id` şeklinde kullanmayı daha çok seviyorum.
+
+`FETCH_ASSOC` ve `FETCH_OBJ` arasında çok ufak bir bellek kullanım farkı bulunmaktadır ve yüksek miktarda veri çektiğinizde bu, az da olsa bir fark yaratır. Ancak eğer çok büyük miktarda bir veri çekmeyecekseniz, `PDO::FETCH_OBJ` kullanmanızın herhangi bir zararı olmaz. Ben genellikle bu şekilde kullanmayı daha çok tercih ederim.
 
 
 
